@@ -1,0 +1,25 @@
+{
+    "title": "T-Shati",
+    "status": "published",
+    "options": [
+        {
+            "title": "Color",
+            "values": ["Blue"]
+        }
+    ],
+    "variants": [
+        {
+            "title": "T-Shati",
+            "prices": [
+                {
+                    "currency_code": "eur",
+                    "amount": 10
+                }
+            ],
+            "manage_inventory": false,
+            "options": {
+                "Color": "Blue"
+            }
+        }
+    ]
+}
