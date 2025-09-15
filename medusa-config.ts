@@ -22,6 +22,12 @@ module.exports = defineConfig({
       resolve: "./src/modules/marketplace",
     },
     {
+      resolve: "./src/modules/invoice-generator",
+    },
+    {
+      resolve: "./src/modules/ticket-booking",
+    },
+    {
       resolve: "@medusajs/medusa/fulfillment",
       options: {
         providers: [

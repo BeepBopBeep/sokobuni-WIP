@@ -128,9 +128,9 @@ const CreateDigitalProductForm = ({
               },
               manage_inventory: false,
               // delegate setting the prices to the
-              // product's page.
+              // product's page. Comment out the shipping_profile_id for now
               prices: [],
-              shipping_profile_id: "",
+              //shipping_profile_id: "sp_01K4X40C4X7DY2QH37T6D23SCP",
             }],
           },
         }),
@@ -186,7 +186,7 @@ const CreateDigitalProductForm = ({
                   Preview
                 </Select.Item>
                 <Select.Item value={MediaType.MAIN}>
-                  Main
+                  Main File
                 </Select.Item>
               </Select.Content>
             </Select>

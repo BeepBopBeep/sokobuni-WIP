@@ -24,6 +24,67 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "creator_name": {
+          "name": "creator_name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "copyright_year": {
+          "name": "copyright_year",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "work_type": {
+          "name": "work_type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "enumItems": [
+            "music",
+            "artwork",
+            "photography",
+            "writing",
+            "video"
+          ],
+          "mappedType": "enum"
+        },
+        "registration_number": {
+          "name": "registration_number",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "territories": {
+          "name": "territories",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "rights_holder_email": {
+          "name": "rights_holder_email",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamptz",
@@ -104,7 +165,10 @@
           "nullable": false,
           "enumItems": [
             "main",
-            "preview"
+            "preview",
+            "license_certificate",
+            "contract_template",
+            "usage_guidelines"
           ],
           "mappedType": "enum"
         },

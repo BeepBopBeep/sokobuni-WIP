@@ -3,7 +3,7 @@ import DigitalProductOrder from "../models/digital-product-order"
 
 export enum MediaType {
   MAIN = "main",
-  PREVIEW = "preview"
+  PREVIEW = "preview",
 }
 export enum OrderStatus {
   PENDING = "pending",
