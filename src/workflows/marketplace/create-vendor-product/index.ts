@@ -23,10 +23,12 @@ const createVendorProductWorkflow = createWorkflow(
     // Retrieve default sales channel to make the product available in.
     // Alternatively, you can link sales channels to vendors and allow vendors
     // to manage sales channels
-    const { data: stores } = useQueryGraphStep({
+    const marketplaceVendorProductFetchStoresStep = useQueryGraphStep({
       entity: "store",
       fields: ["default_sales_channel_id"],
-    })
+    }).config({ name: "marketplace-vendor-product-fetch-stores" })
+
+    const { data: stores } = marketplaceVendorProductFetchStoresStep
 
     const productData = transform({
       input,
@@ -46,15 +48,17 @@ const createVendorProductWorkflow = createWorkflow(
 
     const createdProducts = createProductsWorkflow.runAsStep({
       input: productData,
+
     })
     
-    const { data: vendorAdmins } = useQueryGraphStep({
+    const marketplaceVendorProductFetchAdminsStep = useQueryGraphStep({
   entity: "vendor_admin",
   fields: ["vendor.id"],
   filters: {
     id: input.vendor_admin_id,
   },
-}).config({ name: "retrieve-vendor-admins" })
+}).config({ name: "marketplace-vendor-product-fetch-admins" })
+const { data: vendorAdmins } = marketplaceVendorProductFetchAdminsStep
 
 const linksToCreate = transform({
   input,
@@ -75,13 +79,15 @@ const linksToCreate = transform({
 
 createRemoteLinkStep(linksToCreate)
 
-const { data: products } = useQueryGraphStep({
+const marketplaceVendorProductFetchProductsStep = useQueryGraphStep({
   entity: "product",
   fields: ["*", "variants.*"],
   filters: {
     id: createdProducts[0].id,
   },
-}).config({ name: "retrieve-products" })
+}).config({ name: "marketplace-vendor-product-fetch-products" })
+
+const { data: products } = marketplaceVendorProductFetchProductsStep
 
 return new WorkflowResponse({
   product: products[0],

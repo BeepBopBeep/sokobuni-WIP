@@ -1,3 +1,5 @@
+import { promiseAll } from "@medusajs/framework/utils"
+import QRCode from "qrcode"
 import { MedusaService } from "@medusajs/framework/utils"
 import Venue from "./models/venue"
 import VenueRow from "./models/venue-row"
@@ -11,6 +13,25 @@ export class TicketBookingModuleService extends MedusaService({
   TicketProduct,
   TicketProductVariant,
   TicketPurchase,
-}) { }
+}) { 
+  async generateTicketQRCodes(
+    ticketPurchaseIds: string[]
+  ): Promise<Record<string, string>> {
+    const ticketPurchases = await this.listTicketPurchases({
+      id: ticketPurchaseIds,
+    })
+    const qrCodeData: Record<string, string> = {}
+
+    await promiseAll(
+      ticketPurchases.map(async (ticketPurchase) => {
+        qrCodeData[ticketPurchase.id] = await QRCode.toDataURL(
+          ticketPurchase.id
+        )
+      })
+    )
+
+    return qrCodeData
+  }
+}
 
 export default TicketBookingModuleService

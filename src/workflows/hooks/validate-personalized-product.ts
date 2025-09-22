@@ -1,8 +1,10 @@
 import { MedusaError } from "@medusajs/framework/utils"
-import { addToCartWorkflow } from "@medusajs/medusa/core-flows"
+//import { addToCartWorkflow } from "@medusajs/medusa/core-flows"
+import { cartValidationRegistry } from "./validation-registry"
 
-addToCartWorkflow.hooks.validate(
-  async ({ input }, { container }) => {
+//addToCartWorkflow.hooks.validate(
+cartValidationRegistry.register(  
+async ({ input }, { container }) => {
     const query = container.resolve("query")
     const { data: variants } = await query.graph({
       entity: "variant",

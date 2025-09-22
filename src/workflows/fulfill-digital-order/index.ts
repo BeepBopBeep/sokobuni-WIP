@@ -15,7 +15,7 @@ type FulfillDigitalOrderWorkflowInput = {
 export const fulfillDigitalOrderWorkflow = createWorkflow(
   "fulfill-digital-order",
   ({ id }: FulfillDigitalOrderWorkflowInput) => {
-    const { data: digitalProductOrders } = useQueryGraphStep({
+    const fulfillDigitalOrderFetchOrdersStep = useQueryGraphStep({
       entity: "digital_product_order",
       fields: [
         "*",
@@ -30,7 +30,9 @@ export const fulfillDigitalOrderWorkflow = createWorkflow(
       options: {
         throwIfKeyNotFound: true,
       },
-    })
+    }).config({ name: "fulfill-digital-order-fetch-orders" })
+
+    const  { data: digitalProductOrders } = fulfillDigitalOrderFetchOrdersStep
 
     sendDigitalOrderNotificationStep({
       digital_product_order: digitalProductOrders[0],
@@ -38,8 +40,8 @@ export const fulfillDigitalOrderWorkflow = createWorkflow(
 
     markOrderFulfillmentAsDeliveredWorkflow.runAsStep({
       input: {
-        orderId: digitalProductOrders[0].order.id,
-        fulfillmentId: digitalProductOrders[0].order.fulfillments[0].id,
+        orderId: digitalProductOrders.order.id,
+        fulfillmentId: digitalProductOrders.order.fulfillments[0].id,
       },
     })
 

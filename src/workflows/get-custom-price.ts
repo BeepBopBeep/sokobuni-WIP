@@ -12,7 +12,7 @@ type WorkflowInput = {
 export const getCustomPriceWorkflow = createWorkflow(
   "get-custom-price-workflow",
   (input: WorkflowInput) => {
-    const { data: regions } = useQueryGraphStep({
+    const customPriceFetchRegionsStep = useQueryGraphStep({
       entity: "region",
       fields: ["currency_code"],
       filters: {
@@ -21,8 +21,11 @@ export const getCustomPriceWorkflow = createWorkflow(
       options: {
         throwIfKeyNotFound: true,
       },
-    })
-    const { data: variants } = useQueryGraphStep({
+    }).config({ name: "custom-price-fetch-regions" })
+
+    const { data: regions } = customPriceFetchRegionsStep
+
+    const customPriceFetchVariantsStep = useQueryGraphStep({
       entity: "variant",
       fields: [
         "*",
@@ -40,7 +43,9 @@ export const getCustomPriceWorkflow = createWorkflow(
           currency_code: regions[0].currency_code,
         }),
       },
-    }).config({ name: "get-custom-price-variant" })
+    }).config({ name: "custom-price-fetch-variants" })
+
+    const { data: variants } = customPriceFetchVariantsStep
 
     const price = getCustomPriceStep({
       variant: variants[0],

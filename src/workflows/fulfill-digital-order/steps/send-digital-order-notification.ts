@@ -32,7 +32,7 @@ export const sendDigitalOrderNotificationStep = createStep(
     await Promise.all(
       product.medias
       .filter((media) => media.type === MediaType.MAIN)
-      .map(async (media) => {
+      .map(async (media: any[] | any, ) => {
         medias.push(
           (await fileModuleService.retrieveFile(media.fileId)).url
         )

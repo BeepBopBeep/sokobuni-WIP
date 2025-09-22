@@ -14,7 +14,7 @@ type CustomAddToCartWorkflowInput = {
 export const customAddToCartWorkflow = createWorkflow(
   "custom-add-to-cart",
   (input: CustomAddToCartWorkflowInput) => {
-    const { data: carts } = useQueryGraphStep({
+    const customAddToCartFetchInitialStep = useQueryGraphStep({
       entity: "cart",
       fields: ["region_id"],
       filters: {
@@ -23,7 +23,10 @@ export const customAddToCartWorkflow = createWorkflow(
       options: {
         throwIfKeyNotFound: true,
       },
-    })
+    }).config({ name: "custom-add-to-cart-fetch-initial" })
+
+    const { data: carts } = customAddToCartFetchInitialStep
+
     const price = getCustomPriceWorkflow.runAsStep({
       input: {
         variant_id: input.item.variant_id,
@@ -52,13 +55,15 @@ export const customAddToCartWorkflow = createWorkflow(
     })
 
     // refetch the updated cart
-    const { data: updatedCart } = useQueryGraphStep({
+    const customAddToCartFetchUpdatedStep = useQueryGraphStep({
       entity: "cart",
       fields: ["*", "items.*"],
       filters: {
         id: input.cart_id,
       },
-    }).config({ name: "refetch-cart" })
+    }).config({ name: "custom-add-to-cart-fetch-updated" })
+
+    const { data: updatedCart } = customAddToCartFetchUpdatedStep
 
     return new WorkflowResponse({
       cart: updatedCart[0],

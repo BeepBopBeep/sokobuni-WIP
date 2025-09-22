@@ -18,14 +18,17 @@ type WorkflowInput = {
 const createVendorOrdersWorkflow = createWorkflow(
   "create-vendor-order",
   (input: WorkflowInput) => {
-    const { data: carts } = useQueryGraphStep({
+    const marketplaceVendorFetchCartsStep = useQueryGraphStep({
+      
       entity: "cart",
       fields: ["id", "items.*"],
       filters: { id: input.cart_id },
       options: {
         throwIfKeyNotFound: true,
       },
-    })
+    }).config({ name: "marketplace-vendor-fetch-carts" })
+
+    const { data: carts } = marketplaceVendorFetchCartsStep
 
     const { id: orderId } = completeCartWorkflow.runAsStep({
       input: {

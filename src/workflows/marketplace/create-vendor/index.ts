@@ -51,13 +51,15 @@ const createVendorWorkflow = createWorkflow(
       value: vendorAdmin.id,
     })
     // @ts-ignore
-    const { data: vendorWithAdmin } = useQueryGraphStep({
+    const marketplaceVendorFetchAdminStep = useQueryGraphStep({
       entity: "vendor",
       fields: ["id", "name", "handle", "logo", "admins.*"],
       filters: {
         id: vendor.id,
       },
-    })
+    }).config({ name: "marketplace-vendor-fetch-admin" })
+
+    const { data: vendorWithAdmin } = marketplaceVendorFetchAdminStep
 
     return new WorkflowResponse({
       vendor: vendorWithAdmin[0],

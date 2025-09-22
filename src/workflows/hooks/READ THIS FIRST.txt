@@ -1,0 +1,14 @@
+I've changed how the validation works. The validation registry is centralized so each subsequent module can register with it. This keeps a central registry and each module handles their own validation logic.
+
+
+So instead of the regular addToCart, use the below format
+
+
+// future-module-validation.ts
+import { cartValidationRegistry } from "../workflows/validation-registry"
+
+cartValidationRegistry.register(
+  async ({ input }, { container }) => {
+    // Your new module's validation logic
+  }
+)

@@ -10,7 +10,7 @@ type WorkflowInput = {
 export const generateInvoicePdfWorkflow = createWorkflow(
   "generate-invoice-pdf",
   (input: WorkflowInput) => {
-    const { data: orders } = useQueryGraphStep({
+    const invoiceFetchOrdersStep = useQueryGraphStep({
       entity: "order",
       fields: [
         "id",
@@ -34,7 +34,10 @@ export const generateInvoicePdfWorkflow = createWorkflow(
       options: {
         throwIfKeyNotFound: true,
       },
-    })
+    }).config({ name: "invoice-fetch-orders" })
+
+    const { data: orders } = invoiceFetchOrdersStep
+    
     const countryFilters = transform({
       orders,
     }, (data) => {
@@ -47,13 +50,15 @@ export const generateInvoicePdfWorkflow = createWorkflow(
       }
       return country_codes
     })
-    const { data: countries } = useQueryGraphStep({
+    const invoiceFetchCountriesStep = useQueryGraphStep({
       entity: "country",
       fields: ["display_name", "iso_2"],
       filters: {
         iso_2: countryFilters,
       },
-    }).config({ name: "retrieve-countries" })
+    }).config({ name: "invoice-fetch-countries" })
+
+    const { data: countries } = invoiceFetchCountriesStep
 
     const transformedOrder = transform({
       orders,

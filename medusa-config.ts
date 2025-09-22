@@ -53,7 +53,17 @@ module.exports = defineConfig({
               name: "Local Notification Provider",
               channels: ["email"],
             }
+          },
+         /**{ 
+            resolve: "@medusajs/medusa/notification-sendgrid",
+            id: "sendgrid",
+            options: {
+              channels: ["email"],
+              api_key: process.env.SENDGRID_API_KEY,
+              from: process.env.SENDGRID_FROM,
           }
+              
+        } */
         ]
       }
     }

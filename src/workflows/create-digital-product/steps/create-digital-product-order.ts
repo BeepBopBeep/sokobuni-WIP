@@ -21,14 +21,16 @@ type StepInput = {
 }
 
 const createDigitalProductOrderStep = createStep(
-  "create-digital-product-order",
+  "create-digital-product-order-step",
   async ({ items }: StepInput, { container }) => {
     const digitalProductModuleService: DigitalProductModuleService = 
       container.resolve(DIGITAL_PRODUCT_MODULE)
 
-    const digitalProductIds = items.map((item) => item.variant.digital_product.id)
-
-    const digitalProductOrder = await digitalProductModuleService
+    const digitalProductIds = items
+    .map((item) => item.variant.digital_product.id)
+    .filter(Boolean) as string[]
+try {
+const digitalProductOrder = await digitalProductModuleService
       .createDigitalProductOrders({
         status: OrderStatus.PENDING,
         products: digitalProductIds,
@@ -39,7 +41,11 @@ const createDigitalProductOrderStep = createStep(
     }, {
       digital_product_order: digitalProductOrder,
     })
-  },
+  } catch (error) {
+    console.error("Error creating digital product order:,${error.message}")
+    throw error 
+  }
+},
   async ({ digital_product_order }, { container }) => {
     const digitalProductModuleService: DigitalProductModuleService = 
       container.resolve(DIGITAL_PRODUCT_MODULE)
